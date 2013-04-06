@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import string
 
 import gtk
@@ -14,10 +15,10 @@ from generic_client_connector import GenericClientConnector
 colors = {0: "green", 1: "blue", 2: "yellow", 3: "red", 4: "grey", 5: "magenta", 6: "orange", 7: "white"}
 
 class CubeChatApplication(object):
-    def __init__(self):
+    def __init__(self, hostname, port, name):
         self.connectors = []
         
-        client_connector = GenericClientConnector("forgottendream.org", 28763, "unnamed")
+        client_connector = GenericClientConnector(hostname, port, name)
         self.connectors.append(client_connector)
         
         client_connector.connected.connect(self.on_connector_connected)
@@ -140,6 +141,18 @@ class CubeChatApplication(object):
         for connector in self.connectors:
             connector.disconnect()
         
-app = CubeChatApplication()
-gtk.main()
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        sys.stderr.write("Usage: {} <hostname> <port> [name]\n".format(sys.argv[0]))
+        sys.exit(-1)
+        
+    hostname = sys.argv[1]
+    port = int(sys.argv[2])
+    if len(sys.argv) >= 4:
+        name = sys.argv[3]
+    else:
+        name = "unnamed"
+    
+    app = CubeChatApplication(hostname, port, name)
+    gtk.main()
 
