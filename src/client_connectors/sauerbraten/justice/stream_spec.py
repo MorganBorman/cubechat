@@ -418,10 +418,10 @@ mt = MessageType("N_SPAWN",
         Field(name="armour", type="int"),
         Field(name="armourtype", type="int"),
         Field(name="gunselect", type="int"),
-                IteratedFieldCollection(
-                name="ammo",
-                count=(weapon_types.GUN_PISTOL-weapon_types.GUN_SG+1),
-                field_collection=FieldCollection(Field(name="amount", type="int"))))
+        IteratedFieldCollection(
+        name="ammo",
+        count=(weapon_types.GUN_PISTOL-weapon_types.GUN_SG+1),
+        field_collection=FieldCollection(Field(name="amount", type="int"))))
 sc.add_message_type(message_types.N_SPAWN, mt)
 
 mt = MessageType("N_SOUND",

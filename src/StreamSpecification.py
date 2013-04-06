@@ -175,6 +175,19 @@ class MessageType(FieldCollection):
         except:
             print "Exception occurred in MessageType '%s'" % self.message_name
             raise
+            
+class CustomMessageType(object):
+    def __init__(self, message_name, func):
+        self.message_name = message_name
+        self.func = func
+        
+    def read(self, stream_object, type_method_mapping, game_state={}):
+        "Returns a tuple ('message_name', {from field collection})"
+        try:
+            return (self.message_name, self.func(stream_object, type_method_mapping, game_state=game_state))
+        except:
+            print "Exception occurred in MessageType '%s'" % self.message_name
+            raise
     
 class StreamStateModifierType(FieldCollection):
     def __init__(self, *fields):

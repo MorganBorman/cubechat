@@ -17,7 +17,7 @@ class CubeChatApplication(object):
     def __init__(self):
         self.connectors = []
         
-        client_connector = GenericClientConnector("psl.sauerleague.org", 10000, "unnamed")
+        client_connector = GenericClientConnector("forgottendream.org", 28763, "unnamed")
         self.connectors.append(client_connector)
         
         client_connector.connected.connect(self.on_connector_connected)
@@ -84,24 +84,25 @@ class CubeChatApplication(object):
         self.chatview.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#333333'))
          
     def display(self, text):
-        sections = text.split("\x0c")
+        for text in text.split('\n'):
+            sections = text.split("\x0c")
 
-        for si in xrange(len(sections)):
-            if si != 0:
-                color_select = sections[si][0]
-                if color_select == 's':
-                    self.saved_color = self.current_color
-                elif color_select == 'r':
-                    self.current_color = self.saved_color
-                elif color_select in string.digits:
-                    self.current_color = self.color_tags[int(color_select)]
-                text = sections[si][1:]
-            else:
-                text = sections[si]
-            self._display(repr(text)[1:-1])
-            
-        self.chatbuffer.insert(self.chatbuffer.get_end_iter(), "\n")
-        self.chatview.scroll_to_iter(self.chatbuffer.get_end_iter(), 0)
+            for si in xrange(len(sections)):
+                if si != 0:
+                    color_select = sections[si][0]
+                    if color_select == 's':
+                        self.saved_color = self.current_color
+                    elif color_select == 'r':
+                        self.current_color = self.saved_color
+                    elif color_select in string.digits:
+                        self.current_color = self.color_tags[int(color_select)]
+                    text = sections[si][1:]
+                else:
+                    text = sections[si]
+                self._display(repr(text)[1:-1])
+                
+            self.chatbuffer.insert(self.chatbuffer.get_end_iter(), "\n")
+            self.chatview.scroll_to_iter(self.chatbuffer.get_end_iter(), 0)
         
         self.current_color = self.color_tags[7]
         self.saved_color = self.current_color
